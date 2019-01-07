@@ -2,18 +2,18 @@
 const Game = require('../models/game.model');
 const Guess = require('../models/question.model');
 
-exports.gameTryGuess = function (req, res) {
+exports.gameTryGuess = (req, res) => {
   const guess = new Guess({
     guessText: req.body.guessText
   });
-  guess.save(function(err) {
+  guess.save(error => {
     if (error) {
       res.send(error);
     } else {
       Game.findOneAndUpdate(
         { "name": req.body.name },
         { $push: { "guesses": guess } },
-        function(error, docs) {
+        (error, docs) => {
         if (error) {
           res.json(error)
         } else {
@@ -24,11 +24,11 @@ exports.gameTryGuess = function (req, res) {
   });
 };
 
-exports.gameAnswerGuess = function (req, res) {
+exports.gameAnswerGuess = (req, res) => {
   Guess.findOneAndUpdate(
     { "_id": req.body.guessId },
     { $set: { "guessCorrect": req.body.guessCorrect } },
-    function(error, docs) {
+    (error, docs) => {
     if (error) {
       res.json(error)
     } else {
