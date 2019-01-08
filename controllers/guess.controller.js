@@ -13,11 +13,11 @@ exports.gameTryGuess = (req, res) => {
       Game.findOneAndUpdate(
         { "name": req.body.name },
         { $push: { "guesses": guess } },
-        (error, docs) => {
+        error => {
         if (error) {
           res.json(error)
         } else {
-          res.redirect('/game-view?name=' + req.body.name)
+          res.redirect('game-view?name=' + req.body.name)
         };
       });
     };
@@ -28,11 +28,11 @@ exports.gameAnswerGuess = (req, res) => {
   Guess.findOneAndUpdate(
     { "_id": req.query.guessId },
     { $set: { "guessCorrect": req.query.guessCorrect } },
-    (error, docs) => {
+    error => {
     if (error) {
       res.json(error)
     } else {
-      res.redirect('/game-view?name=' + req.body.name)
+      res.redirect('game-view?name=' + req.body.name)
     };
   });
 };

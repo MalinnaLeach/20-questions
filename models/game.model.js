@@ -1,5 +1,6 @@
 
 const mongoose = require('mongoose');
+const deepPopulate = require('mongoose-deep-populate')(mongoose);
 const Schema = mongoose.Schema;
 const QuestionSchema = require('./question.model')
 const GuessSchema = require('./guess.model')
@@ -9,10 +10,22 @@ const arrayLimit = (val) => {
 }
 
 const oneQuestionAtATime = (val) => {
-  const unansweredQustions = val.filter((q) => {
-    q.response === undefined;
-  })
-  return unansweredQustions.length === 0;
+  if (val.length > 1) {
+    return val.forEach((q) => {
+      console.log(q)
+      return Question.findOne({"_id": q}, (error, question) => {
+        console.log(question)
+        if (question.response === undefined) {
+          console.log(question.response)
+          return false
+        }
+      });
+    });
+    console.log("returning true")
+    return true
+  }
+  console.log("returning true")
+  return true
 }
 
 const questionValidators = [
@@ -34,5 +47,7 @@ const GameSchema = new Schema({
         ref: 'Guess'
     }]
 });
+
+GameSchema.plugin(deepPopulate);
 
 module.exports = mongoose.model('Game', GameSchema);

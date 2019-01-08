@@ -10,17 +10,17 @@ exports.gameAskQuestion = (req, res) => {
     if (error) {
       res.send(error);
     } else {
-      Game.findOneAndUpdate(
-        { "name": req.body.name },
-        { $push: { "questions": question } },
-        (error, docs) => {
-        if (error) {
-          res.json(error)
-        } else {
-          res.redirect('/game-view?name=' + req.body.name)
-        };
-      });
-    };
+      Game.findOne({ "name": req.body.name }, (err, game) => {
+          game.questions.push(question)
+          game.save(error => {
+            if (error) {
+              res.send(error);
+            } else {
+              res.redirect('game-view?name=' + req.body.name)
+            }
+          });
+        });
+      }
   });
 };
 
@@ -28,11 +28,11 @@ exports.gameAnswerQuestion = (req, res) => {
   Question.findOneAndUpdate(
     { "_id": req.body.questionId },
     { $set: { "response": req.body.response } },
-    (error, docs) => {
+    error => {
     if (error) {
       res.json(error)
     } else {
-      res.redirect('/game-view?name=' + req.body.name)
+      res.redirect('game-view?name=' + req.body.name)
     };
   });
 };
