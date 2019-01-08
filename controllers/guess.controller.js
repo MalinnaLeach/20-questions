@@ -17,7 +17,7 @@ exports.gameTryGuess = (req, res) => {
         if (error) {
           res.json(error)
         } else {
-          res.json({ docs });
+          res.redirect('/game-view?name=' + req.body.name)
         };
       });
     };
@@ -26,13 +26,13 @@ exports.gameTryGuess = (req, res) => {
 
 exports.gameAnswerGuess = (req, res) => {
   Guess.findOneAndUpdate(
-    { "_id": req.body.guessId },
-    { $set: { "guessCorrect": req.body.guessCorrect } },
+    { "_id": req.query.guessId },
+    { $set: { "guessCorrect": req.query.guessCorrect } },
     (error, docs) => {
     if (error) {
       res.json(error)
     } else {
-      res.json({ docs });
+      res.redirect('/game-view?name=' + req.body.name)
     };
   });
 };

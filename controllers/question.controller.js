@@ -17,7 +17,7 @@ exports.gameAskQuestion = (req, res) => {
         if (error) {
           res.json(error)
         } else {
-          res.json({ docs });
+          res.redirect('/game-view?name=' + req.body.name)
         };
       });
     };
@@ -32,7 +32,7 @@ exports.gameAnswerQuestion = (req, res) => {
     if (error) {
       res.json(error)
     } else {
-      res.json({docs});
+      res.redirect('/game-view?name=' + req.body.name)
     };
   });
 };

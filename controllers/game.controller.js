@@ -2,12 +2,6 @@
 const Game = require('../models/game.model');
 const Question = require('../models/question.model');
 
-exports.test = function (req, res) {
-  Question.find({},{},function(e,docs){
-    res.json({ docs });
-  })
-};
-
 exports.gameCreate = (req, res) => {
   const game = new Game({
     name: req.body.name
@@ -17,12 +11,12 @@ exports.gameCreate = (req, res) => {
         res.send(error);
       }
       else {
-        res.send('Game created successfully')
+        res.redirect('/game-view?name=' + req.body.name)
       }
     });
 };
 
-exports.gameJoin = (req, res) => {
+exports.gameView = (req, res) => {
   Game.findOne({ "name": req.query.name }, (error, docs) => {
     if (error) {
       res.send(error);
