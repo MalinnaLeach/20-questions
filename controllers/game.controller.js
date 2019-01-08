@@ -22,7 +22,10 @@ exports.gameView = (req, res) => {
       res.send(error);
     }
     else {
-      res.json({ docs })
+      res.json({ 
+        questions: docs.questions,
+        guesses: docs.guesses
+      })
     }
   })
 }

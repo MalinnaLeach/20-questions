@@ -8,6 +8,18 @@ const arrayLimit = (val) => {
   return val.length <= 20;
 }
 
+const oneQuestionAtATime = (val) => {
+  const unansweredQustions = val.filter((q) => {
+    q.response === undefined;
+  })
+  return unansweredQustions.length === 0;
+}
+
+const questionValidators = [
+  { validator: arrayLimit, msg: 'You can\'t ask more than 20 questions.  You have lost the game' },
+  { validator: oneQuestionAtATime, msg: 'You can only ask one question at a time.  Wait for your existing questions to have answers.' }
+]
+
 const GameSchema = new Schema({
     name: { type: String, required: true, unique: true, max: 100 },
     questions: {
@@ -15,7 +27,7 @@ const GameSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question'
       }],
-      validate: [arrayLimit, 'exceeds the limit of 20']
+      validate: questionValidators
     },
     guesses: [{
         type: mongoose.Schema.Types.ObjectId,
