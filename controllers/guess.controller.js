@@ -1,6 +1,6 @@
 
 const Game = require('../models/game.model');
-const Guess = require('../models/question.model');
+const Guess = require('../models/guess.model');
 
 exports.gameTryGuess = (req, res) => {
   const guess = new Guess({
@@ -26,8 +26,8 @@ exports.gameTryGuess = (req, res) => {
 
 exports.gameAnswerGuess = (req, res) => {
   Guess.findOneAndUpdate(
-    { "_id": req.query.guessId },
-    { $set: { "guessCorrect": req.query.guessCorrect } },
+    { "_id": req.body.guessId },
+    { $set: { "guessCorrect": req.body.guessCorrect } },
     error => {
     if (error) {
       res.json(error)

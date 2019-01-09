@@ -1,8 +1,5 @@
 
-const mongoose = require('mongoose');
-
 const Game = require('../models/game.model');
-const Question = require('../models/question.model');
 
 exports.gameCreate = (req, res) => {
   const game = new Game({
